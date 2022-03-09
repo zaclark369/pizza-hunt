@@ -15,8 +15,25 @@ const PizzaSchema = new Schema({
         type: String,
         default: 'Large'
     },
-    toppings: []
-});
+    toppings: [],
+    comments: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Comment',
+        }
+    ]
+},
+{
+    toJson: {
+        virtuals: true,
+    },
+    id: false,
+}
+);
+
+PizzaSchema.virtual('commentCount').get(function() {
+    return this.comments.length;
+  });
 
 // create model using schema
 const Pizza = model('Pizza', PizzaSchema);
